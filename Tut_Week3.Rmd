@@ -1,0 +1,11 @@
+---
+title: "STA304 Tutorial Week 3"
+author: "Tianyi Zhang 1005156607"
+date: "21/01/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+
+
+```
