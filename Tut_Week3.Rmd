@@ -29,7 +29,7 @@ In this tutorial we use @citer
 polls <- 
   list_package_resources("7bce9bf4-be5c-4261-af01-abfbc3510309") %>%
   filter(tolower(format) %in% c('csv', 'geojson')) %>%
-  filter(row_number()==1) %>%
+  # filter(row_number()==1) %>%
   get_resource()
 
 #Clean dataset
