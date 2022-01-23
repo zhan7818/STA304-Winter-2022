@@ -37,7 +37,7 @@ polls_clean <-
   polls %>%
   clean_names() %>%
   select(id, ballots_cast, open_date) %>% # Select only the columns needed
-  mutate(open_date = as_date(open_date)) %>% # Mutate the open_date column so that all values are in date object format
+  mutate(open_date = as_date(open_date)) %>% # change all open_date values to date object format
   filter(open_date >= as_date("2021-01-01")) # filter the dataset so that only the 
 ```
 
