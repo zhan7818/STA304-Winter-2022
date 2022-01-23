@@ -3,9 +3,73 @@ title: "STA304 Tutorial Week 3"
 author: "Tianyi Zhang 1005156607"
 date: "21/01/2022"
 output: pdf_document
+bibliography: myreferencelist.bib
 ---
 
 ```{r setup, include=FALSE}
+library(opendatatoronto)
+library(tidyverse)
+library(tidyr)
+library(knitr)
+library(janitor)
+library(lubridate)
 
-
+# citation("opendatatoronto")
 ```
+# Setup
+
+[@citeopen]
+
+In this tutorial we use @citer
+
+## Data Cleaning
+
+```{r}
+#Polls conducted by the city
+polls <- 
+  list_package_resources("7bce9bf4-be5c-4261-af01-abfbc3510309") %>%
+  filter(tolower(format) %in% c('csv', 'geojson')) %>%
+  filter(row_number()==1) %>%
+  get_resource()
+
+#Clean dataset
+polls_clean <-
+  polls %>%
+  clean_names() %>%
+  select(id, ballots_cast, open_date) %>% # Select only the columns needed
+  mutate(open_date = as_date(open_date)) %>% # Mutate the open_date column so that all values are in date object format
+  filter(open_date >= as_date("2021-01-01")) # filter the dataset so that only the 
+```
+
+## Graph
+
+```{r, include=FALSE}
+#Old Code
+#  kable(
+#    caption = "Ballots Cast in Toronto in Polls Conducted by the City in 2021",
+#    col.names = c("Month", "Average Ballots Cast"),
+#    digits = 1,
+#    booktabs = TRUE
+#  )
+```
+Below is a histogram that showcases the average ballots cast in city-conducted polls in Toronto, 2021.
+```{r}
+# Make a graph of the dataset
+polls_clean %>%
+  mutate(open_date = month(open_date,
+                           label = TRUE,
+                           abbr = FALSE)) %>%
+ drop_na(open_date) %>% # Drop the NA values
+  group_by(open_date) %>%
+  summarise(number_cast = mean(ballots_cast)) %>%
+  ggplot(aes(x=open_date,y=number_cast)) + # use ggplot to graph
+  geom_col() +
+  labs(x="Month",
+       y="Average Ballots Cast",
+       title="Ballots Cast in Totonto in Polls Conducted by the City in 2021")
+```
+## GitHub Repo
+
+https://github.com/zhan7818/STA304-Winter-2022.git
+
+## Citations
